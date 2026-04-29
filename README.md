@@ -5,11 +5,11 @@
 
 -Göstergelerin gerçek zamanlı animasyonu
 
--Kullanıcı girişi ile değer değiştirme (klavye, fare, slider vb.)
+-Kullanıcı girişi ile değer değiştirme 
 
--Gerçek enstrümana benzer görsel tasarım (renk, şekil, ölçek)
+-Gerçek enstrümana benzer görsel tasarım
 
--Birim dönüşümü (feet/metre, knot/km-h, hPa/inHg vb.)
+-Birim dönüşümü (feet -> metre)
 
 -Kritik değerlerde görsel veya sesli alarm/uyarı
 
