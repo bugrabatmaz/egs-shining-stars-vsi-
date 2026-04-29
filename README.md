@@ -50,7 +50,9 @@ class VSISimulator:
         self.last_log_time = time.time()
         
         self.setup_ui()
-        self.update_instrument() # Animasyon döngüsünü başlat
+        self.update_instrument()
+        
+# Animasyon döngüsünü başlat
 
     def setup_ui(self):
         self.canvas = tk.Canvas(self.root, width=400, height=400, bg="#1e1e1e", highlightthickness=0)
@@ -60,18 +62,23 @@ class VSISimulator:
        
         self.needle_id = self.canvas.create_polygon(0, 0, 0, 0, fill="#ffffff", outline="#aaaaaa")
         self.center_pin_id = self.canvas.create_oval(188, 188, 212, 212, fill="#2c3e50", outline="#7f8c8d", width=2)
-        # Arıza (OFF) Bayrağı (Başlangıçta gizli)
+        
+# Arıza (OFF) Bayrağı (Başlangıçta gizli)
+
         self.off_flag_bg = self.canvas.create_rectangle(220, 190, 270, 220, fill="red", outline="white", state="hidden")
         self.off_flag_text = self.canvas.create_text(245, 205, text="OFF", fill="white", font=("Arial", 12, "bold"), state="hidden")
         
-        # Dinamik Birim ve Değer Metni
+ # Dinamik Birim ve Değer Metni
+        
         self.value_text_id = self.canvas.create_text(200, 270, text="0 FPM", fill="#f39c12", font=("Courier", 16, "bold"))
 
-        # Alarm Çerçevesi 
+  # Alarm Çerçevesi 
+        
         self.warning_label = tk.Label(self.root, text="", font=("Arial", 14, "bold"), fg="red")
         self.warning_label.pack()
 
-        # 2. KONTROLLER
+ # 2. KONTROLLER
+ 
         control_frame = tk.Frame(self.root)
         control_frame.pack(fill="x", padx=50)
 
@@ -80,7 +87,8 @@ class VSISimulator:
                                    length=400, command=self.on_slider_change)
         self.fpm_slider.pack(pady=10)
 
-        # Butonlar Çerçevesi
+  # Butonlar Çerçevesi
+  
         btn_frame = tk.Frame(self.root)
         btn_frame.pack(pady=20)
 
@@ -93,7 +101,8 @@ class VSISimulator:
         self.btn_log = tk.Button(btn_frame, text="Logları İndir (JSON)", width=15, command=self.export_logs)
         self.btn_log.grid(row=0, column=2, padx=10)
 
-    # --- ETKİLEŞİM FONKSİYONLARI ---
+ # --- ETKİLEŞİM FONKSİYONLARI ---
+ 
     def on_slider_change(self, val):
         if not self.is_failed:
             self.target_fpm = float(val)
@@ -122,7 +131,8 @@ class VSISimulator:
         # İnterpolasyon (Lerp) - Kapsül gecikmesi simülasyonu
         self.current_fpm += (self.target_fpm - self.current_fpm) * self.smoothing_factor
 
-        # Uyarı Sistemi
+ # Uyarı Sistemi
+        
         if abs(self.current_fpm) > 1500:
             self.warning_label.config(text="DİKKAT: YÜKSEK DİKEY HIZ")
             self.canvas.config(bg="#c0392b")
@@ -130,7 +140,8 @@ class VSISimulator:
             self.warning_label.config(text="")
             self.canvas.config(bg="#2c3e50")
 
-        # Veri Loglama (Saniyede 1 kez)
+  # Veri Loglama (Saniyede 1 kez)
+  
         current_time = time.time()
         if current_time - self.last_log_time >= 1.0:
             self.logs.append({
@@ -141,26 +152,31 @@ class VSISimulator:
             })
             self.last_log_time = current_time
 
-        # Ekranı Yeniden Çiz
+  # Ekranı Yeniden Çiz
+  
         self.draw_vsi()
 
-        # Döngüyü 16ms sonra (yaklaşık 60 FPS) tekrar çağır
+ # Döngüyü 16ms sonra (yaklaşık 60 FPS) tekrar çağır
+ 
         self.root.after(16, self.update_instrument)
 
     def draw_static_dial(self):
         cx, cy, r = 200, 200, 170
         
-        # Dış Çerçeve (Bezel)
+  # Dış Çerçeve (Bezel)
+  
         self.canvas.create_oval(cx-r-10, cy-r-10, cx+r+10, cy+r+10, fill="#111111", outline="#555555", width=6)
         self.canvas.create_oval(cx-r, cy-r, cx+r, cy+r, fill="#1e1e1e", outline="#333333", width=2)
 
-        # Bilgi Metinleri
+  # Bilgi Metinleri
+  
         self.canvas.create_text(cx, cy-60, text="VERTICAL SPEED", fill="#888888", font=("Arial", 10, "bold"))
         self.canvas.create_text(cx, cy+60, text="100 FEET PER MINUTE", fill="#888888", font=("Arial", 8))
         self.canvas.create_text(cx-60, cy-50, text="UP", fill="white", font=("Arial", 14, "bold"))
         self.canvas.create_text(cx-60, cy+50, text="DN", fill="white", font=("Arial", 14, "bold"))
 
-        # Çentikler (Ticks) ve Sayılar
+ # Çentikler (Ticks) ve Sayılar
+ 
         for fpm in range(-2000, 2001, 100):
             ratio = fpm / 2000.0
             angle_deg = 180 + (ratio * 135)
@@ -168,7 +184,8 @@ class VSISimulator:
 
             is_major = (fpm % 500 == 0) # 500, 1000, 1500, 2000 noktaları
             
-            # Çizgi uzunlukları
+ # Çizgi uzunlukları
+ 
             outer_r = r - 5
             inner_r = r - 25 if is_major else r - 12
             
@@ -180,14 +197,16 @@ class VSISimulator:
             line_width = 4 if is_major else 2
             self.canvas.create_line(x1, y1, x2, y2, fill="white", width=line_width)
 
-            # Sayıları Yazdırma (Sadece ana çentiklere ve 0 haricindekilere)
+ # Sayıları Yazdırma (Sadece ana çentiklere ve 0 haricindekilere)
+ 
             if is_major:
                 val = abs(fpm) // 100 # 500 yerine 5, 1000 yerine 10 yazar
                 text_r = r - 45
                 tx = cx + text_r * math.cos(angle_rad)
                 ty = cy + text_r * math.sin(angle_rad)
                 
-                # 0 noktasını biraz daha dışarı ve belirgin yazalım
+  # 0 noktasını biraz daha dışarı ve belirgin yazalım
+  
                 if fpm == 0:
                     self.canvas.create_text(cx - r + 35, cy, text="0", fill="white", font=("Arial", 20, "bold"))
                 else:
@@ -196,7 +215,8 @@ class VSISimulator:
     def draw_vsi(self):
         cx, cy, r = 200, 200, 170
 
-        # Değer ve Birim Metni Güncellemesi
+ # Değer ve Birim Metni Güncellemesi
+ 
         display_val = self.current_fpm
         unit_text = "FPM"
         if self.is_metric:
@@ -204,24 +224,27 @@ class VSISimulator:
             unit_text = "m/s"
             
         self.canvas.itemconfig(self.value_text_id, text=f"{round(display_val, 1)} {unit_text}")
-
-        # Arıza (OFF) Bayrağı Görünürlüğü
+ # Arıza (OFF) Bayrağı Görünürlüğü
+ 
         flag_state = "normal" if self.is_failed else "hidden"
         self.canvas.itemconfig(self.off_flag_bg, state=flag_state)
         self.canvas.itemconfig(self.off_flag_text, state=flag_state)
 
-        # İbre (Needle) Açısını Hesaplama
+   # İbre (Needle) Açısını Hesaplama
+   
         clamped_fpm = max(-2000, min(2000, self.current_fpm))
         ratio = clamped_fpm / 2000.0
         angle_deg = 180 + (ratio * 135) 
         angle_rad = math.radians(angle_deg)
         
-        # Gerçekçi İbre Geometrisi (Poligon Köşeleri)
-        # İbrenin ucu, tabanın sol ve sağ genişliği, ve arka kuyruk
+# Gerçekçi İbre Geometrisi (Poligon Köşeleri)
+ # İbrenin ucu, tabanın sol ve sağ genişliği, ve arka kuyruk
+ 
         tip_x = cx + (r - 10) * math.cos(angle_rad)
         tip_y = cy + (r - 10) * math.sin(angle_rad)
         
-        # Tabanı genişletmek için açıya 90 derece (Pi/2) ekleyip çıkarıyoruz
+ # Tabanı genişletmek için açıya 90 derece (Pi/2) ekleyip çıkarıyoruz
+ 
         base_width = 8
         left_x = cx + base_width * math.cos(angle_rad - math.pi/2)
         left_y = cy + base_width * math.sin(angle_rad - math.pi/2)
@@ -232,7 +255,7 @@ class VSISimulator:
         tail_x = cx - 30 * math.cos(angle_rad) # Kuyruk uzantısı
         tail_y = cy - 30 * math.sin(angle_rad)
 
-        # Poligonu yeni koordinatlarla güncelle
+  # Poligonu yeni koordinatlarla güncelle
         self.canvas.coords(self.needle_id, tip_x, tip_y, left_x, left_y, tail_x, tail_y, right_x, right_y)
         
 
