@@ -3,6 +3,8 @@
 
 __Shining Stars*__
 
+# Özellikler
+
 -Göstergelerin gerçek zamanlı animasyonu
 
 -Kullanıcı girişi ile değer değiştirme (klavye, fare, slider vb.)
