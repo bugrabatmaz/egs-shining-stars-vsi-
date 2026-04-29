@@ -1,5 +1,6 @@
 # egs-shining-stars-vsi-
-Vertical Speed Indicator
+**Vertical Speed Indicator** 
+__*Shining Stars*__
 
 -Göstergelerin gerçek zamanlı animasyonu
 
