@@ -7,4 +7,4 @@ Vertical Speed Indicator
 -Kritik değerlerde görsel veya sesli alarm/uyarı
 
 YAZI DENEME
-print"Hello World"
+
