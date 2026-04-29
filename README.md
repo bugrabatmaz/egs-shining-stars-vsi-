@@ -1,4 +1,4 @@
-# egs-shining-stars-vsi-
+# Shining Stars VSI
 **Vertical Speed Indicator** 
 
 __Shining Stars*__
