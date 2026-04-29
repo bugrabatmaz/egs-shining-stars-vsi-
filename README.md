@@ -1,3 +1,4 @@
 # egs-shining-stars-vsi-
 VSI 
-YAZI DENEME
+YAZI DENE
+print"Hello World"
