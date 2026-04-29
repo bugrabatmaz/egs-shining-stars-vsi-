@@ -1,7 +1,5 @@
-# Shining Stars VSI
-**Vertical Speed Indicator** 
-
-__Shining Stars*__
+# Shining Stars* VSI
+**Vertical Speed Indicator Simulator** 
 
 # Özellikler
 
@@ -14,6 +12,13 @@ __Shining Stars*__
 -Birim dönüşümü (feet/metre, knot/km-h, hPa/inHg vb.)
 
 -Kritik değerlerde görsel veya sesli alarm/uyarı
+
+# KODLAR
+
+KODLAR
+CART
+CURT
+FALAN
 
 YAZI DENEME
 
